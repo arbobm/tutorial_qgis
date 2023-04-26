@@ -1,0 +1,293 @@
+---
+title: "Tutorial QGIS"
+subtitle: "Preparação dos dados para uso no Zonation"
+output:
+  rmdformats::downcute:
+    css: templates/style.scss
+    toc_depth: 5
+  officedown::rdocx_document:
+    reference_docx: 'templates/template.docx'
+    toc: true
+    page_margins:
+      bottom: 1
+      top: 1
+      right: 1
+      left: 1
+      header: 0.5
+      footer: 0.5
+      gutter: 0
+    tables:
+      topcaption: TRUE
+      caption:
+        # controla se 'Tabela. n' fica negrito ou não 
+        pre: 'Tabela '
+        sep: '. '
+        fp_text: !expr officer::fp_text_lite(bold = FALSE) 
+    plots:
+      align: left
+      topcaption: FALSE
+      caption:
+        # controla se 'Figura. n' fica negrito ou não. NÃO FUNCIONOU!! 
+        pre: 'Figura '
+        sep: '. '
+        # https://rdrr.io/cran/officedown/src/R/rdocx_document.R
+        fp_text: !expr officer::fp_text_lite(bold = FALSE)
+  html_document:
+    css: templates/style.scss
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+toc-title: 'Índice'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      # fig.align = "center",
+                      dpi = 500,
+                      fig.width = 6.33,
+                      fig.height = 3.43,
+                      out.width = '100%'
+                      )
+```
+
+
+> Este tutorial foi criado utilizando o QGIS versão 3.28.5-Firenze. Os nomes dos menus e caminhos serão apresentados em Português. Se desejar trocar o idioma do seu programa, [clique aqui](https://www.youtube.com/watch?v=VK4nC3p-VT4) para saber como.
+
+# Criar arquivo de pontos...
+
+O arquivo pode ter quantas colunas você desejar, mas precisa ter obrigatoriamente, para uso desse tutorial, os pares de coordenadas em graus decimais separados em duas colunas: [**longitude** (`X`) e **latitude** (`Y`)](#latlong). O separador de decimais deve ser ponto.
+
+## ...a partir de um arquivo .csv
+
+1. No menu *Camada*, vá em *Gerenciador de fonte de dados*.
+
+```{r}
+knitr::include_graphics("images/add_camada_csv_1.png")
+```
+
+2. No menu lateral, à esquerda, selecione *Texto delimitado*. Utilizando os 3 pontinhos ![](images/3pontinhos.png) localizado no final do campo `Nome do arquivo`, localize a tabela no formato `.csv` salva em seu computador. Certifique-se que `Campo X` e `Campo Y` referem-se às colunas de longitude e de latitude respectivamente. 
+
+```{r}
+knitr::include_graphics("images/add_camada_csv_2.png")
+```
+
+<!-- * mostrar amostra de dados na janela -->
+
+3. O arquivo gerado ainda é um arquivo `csv`, porém os programas de SIG são capazes de espacializá-los utilizando as coordenadas geográficas. 
+
+```{r}
+knitr::include_graphics("images/add_camada_csv_3.png")
+```
+Para editarmos a tabela de atributos e utilizarmos os pontos em análises espaciais, precisamos transformar em um arquivo vetorial (nesse caso, um *shapefile* - `.shp`).
+
+```{r}
+knitr::include_graphics("images/add_camada_csv_4.png")
+```
+
+## ...a partir de um arquivo .xlsx
+
+1. Para criar um arquivo de pontos a partir de coordenadas em uma planilha `.xlsx`, é necessário instalar um complemento chamado **Spreadsheet Layers**. Pra isso, no menu *Complementos*, vá em *Gerenciar e Instalar Complementos*.
+
+```{r}
+knitr::include_graphics("images/add_camada_xlsx_1.png")
+```
+
+2.  No campo `Buscar...`, digite o nome do complemento (*Spreadsheet Layers*). Clique sobre ele e, após, clique em `Instalar Complemento`.
+
+```{r}
+knitr::include_graphics("images/add_camada_xlsx_2.png")
+```
+
+Quando a instalação estiver completa, a mensagem `Complemento instalado corretamente` aprecerá no topo da janela. Feche a janela de complementos.
+
+3. O complemento já está pronto para ser usado no menu `Camada`, `Adicionar camada`, `Add Spreadsheet Layers...`. Porém, vamos adicionar uma barra de ferramentas para facilitar o acesso. 
+
+Clique com o botão esquerdo em qualquer parte fazia da barra de ferramentas, parte cinza onde estão localizados os botões.
+
+<!-- ```{r} -->
+<!-- knitr::include_graphics("images/add_camada_xlsx_3.png") -->
+<!-- ``` -->
+
+<!-- c1. adicionar barra de gerenciamento de camadas -->
+
+```{r}
+knitr::include_graphics("images/noun-mouse-click-arrow-1676719_2.png")
+```
+
+4. Ative o item `Gerenciar camadas`.
+
+```{r}
+knitr::include_graphics("images/gerenciar_camadas.png")
+```
+
+Uma nova barra aparecerá do lado esquerdo. Você pode mover para que fique em qualquer parte da janela.
+
+5. Clique no ícone do complemento `Add Spreadsheet Layer...`.
+
+```{r}
+# knitr::include_graphics("images/gerenciar_camadas_2.png")
+knitr::include_graphics("images/add_spreadsheet_icon.png")
+```
+
+6. Clique em `Browse...`, localizado no final do campo `File Name` e localize a tabela no formato `.xlsx` salva em seu computador. Se houver mais de uma planilha no arquivo, selecione a aba correta no campo `Sheet`. 
+Marque a opção `Geometry`. Certifique-se que `X field` e `Y field` correspondem às colunas de longitude e de latitude, respectivamente. Configure, no campo `Reference system`, o sistma de coordenadas **SIRGAS 2000**. (Caso ele não seja selecionado automaticamente, clique no ícone do globo ![](images/icone_globinho.png)) e busque o sistema de referencia conforme figura abaixo:
+
+```{r}
+knitr::include_graphics("images/seletor_src_s2k.png")
+```
+
+7. Marque a caixa `Show fields in attribute table` se desejar que as colunas das coordenadas apareçam na tabela de atributos (eu não vejo porque não).
+
+```{r}
+knitr::include_graphics("images/add_camada_xlsx_4.png")
+```
+
+# Abrir arquivos vetoriais
+
+## Exemplo 1 - Limites estaduais
+
+1. Na barra de ferramentas que adicionamos na seção anterior, clique em `Adicionar Camada Vetorial`.
+
+```{r}
+knitr::include_graphics("images/add_shp.png")
+```
+
+2. Utilizando os 3 pontinhos ![](images/3pontinhos.png) localizado no final do campo `Base(s) de vetores`, localize, na pasta `shapes`, o arquivo `limites_estaduais.shp` salvo em seu computador.
+
+Clique em `Adicionar`.
+
+```{r}
+knitr::include_graphics("images/add_shp_2.png")
+```
+
+## Exemplo 2 - Unidades de conservação
+
+1. Na barra de ferramentas que adicionamos na seção anterior, clique em `Adicionar Camada Vetorial`.
+
+2. Utilizando os 3 pontinhos ![](images/3pontinhos.png) localizado no final do campo `Base(s) de vetores`, localize, na pasta `shapes`, o arquivo `UCsFedIcmb_EstMunicMMA_se.shp` salvo em seu computador.
+
+<!-- # Mudar sistema de referencias de coordenadas de um arquivo vetorial -->
+
+<!-- limites_estaduais sirgas2000 para albers -->
+
+# Criar grade de polígonos
+
+Vamos criar uma grade de polígonos quadrados, com 5 km de lado, com a mesma extensão que a área de estudo - nesse caso, a parte continental da região sudeste do Brasil.
+
+1. No menu *Vetor*, vá em *Investigar* e em *Criar grade*.
+
+```{r}
+knitr::include_graphics("images/01_criar_grade.png")
+```
+
+As células da grade podem ter 3 formatos: retângulo, diamante e hexágono.
+
+```{r, fig.cap="Diferentes formatos de células da grade. [Fonte.](https://docs.qgis.org/3.28/pt_BR/docs/user_manual/processing_algs/qgis/vectorcreation.html#create-grid)"}
+
+knitr::include_graphics("images/grids_types.png")
+```
+
+2. No campo `Tipo de grade`, selecione `Retângulo (Polígono)`. No campo `Extensão da grade`, clique no botão contendo 3 pontinhos ![](images/3pontinhos.png) e vá em `Calcular a partir da Camada`. Escolha a camada `limites_estaduais`.
+
+```{r}
+knitr::include_graphics("images/01_criar_grade2.png")
+```
+
+3. Nos campos `Espaçamento horizontal` e `Espaçamento vertical`, insira o valor 5000. Escolha o lugar onde deseja salvar o arquivo e clique em `Executar`.
+
+```{r}
+knitr::include_graphics("images/01_criar_grade3.png")
+```
+
+Neste momento, podemos adicionar ao *shapefile* criado um **índice espacial**. O índice espacial torna as consultas espaciais muito mais rápidas. Facilitará nosso passo seguinte, em que selecionaremos apenas as células da grade criada que se sobrepõe a área dos estados da região sudeste do Brasil.
+
+4. Clique com o botão direito sobre o nome da camada `grid_5km` e vá em `Propriedades`. Também é possível acessar as propriedades da camada clicando duas vezes sobre seu nome.
+
+```{r}
+knitr::include_graphics("images/spatial_index1.png")
+```
+
+Na barra lateral, clique em *fonte*. Em *Geometry*, clique no botão `Criar Índice Espacial`. Após alguns segundos, dependendo do tamanho do arquivo vetorial e da capacidade computacional, a mensagem `Sucesso na criação do índice espacial` irá aparecer. Clique em `Ok` e `Ok` novamente para fechar a janela das propriedades da camada.
+
+```{r}
+knitr::include_graphics("images/spatial_index2.png")
+```
+
+5. Agora, vamos selecionar as células da grade que se sobrepõe a área dos estados da região sudeste. Clique no botão *Selecionar por localizaçao*.
+
+```{r}
+knitr::include_graphics("images/02_selecionar_por_localizacao.png")
+```
+
+6. No campo `Selecionar feições de`, escolha a camada `grade_5km`. Certifique-se de que apenas a opção `interseccionam` esteja marcada e escolha a camada `limites_estaduais` no campo `Ao comparar com as feições do`. Como, nesse momento, não temos uma seleção ativa, selecione `Criar uma nova seleção` no campo `Modificar seleção atual por`. Clique em `executar`. Os polígonos da grade que correspondem ao critério selecionado ficarão **amarelos**.
+
+```{r}
+knitr::include_graphics("images/02_selecionar_por_localizacao2.png")
+```
+
+7. Clique com o botão direito na camada que selecionamos, `grid_5km`, vá em *Exportar* e em *Salvar Feições selecionadas como...*.
+
+```{r}
+knitr::include_graphics("images/02_selecionar_por_localizacao3.png")
+```
+
+8. Utilizando os 3 pontinhos ![](images/3pontinhos.png) localizado no final do campo `Nome do arquivo`, escolha o local onde deseja salvar o arquivo vetorial contendo a grade resultante da seleção. Certifique-se que a opção `Salvar somente feições selecionadas` esteja marcada. Na opção `Selecione os campos para exportar e as opções de exportação`, selecione as colunas que deseja manter na tabela de atributos. Na figura abaixo, apenas o atributo `id` porque as outras não serão usadas nos passos seguintes, mas essa seleção é opcional.
+
+```{r}
+knitr::include_graphics("images/02_selecionar_por_localizacao4.png")
+```
+
+# Transformar grade (arquivo vetorial) em arquivo raster
+
+1. No menu *Raster*, vá em *Converter* e em *Converter vetor para raster (rasterizar)*.
+
+```{r}
+knitr::include_graphics("images/03_rasterizar_grid.png")
+```
+
+2. Em `Camada de entrada`, escolha a camada que desejamos *rasterizar*: `grid_5km_final`. Queremos que todos os *pixels* tenham o mesmo valor (1), mas não temos uma coluna na tabela de atributos que indique isso. Por isso, não colocaremos nada em `Campo a usar para o valor burn-in [opcional]`. Indicaremos o valor `1` em `Um valor fixo para gravar [opcional]`.
+
+3. No campo `Unidades de tamanho da saída`, indique `Unidades georreferenciadas` (correspondente a unidade do sistema de referência da `camada de entrada`. Nesse caso, **metros**.)
+
+4. Em `Resolução Horizontal/Largura` e `Resoluçao Vertical/Altura`, digite o valor equivalente ao lado do quadrado da grade que definimos anteriormente, em **metros**: `5000`.
+
+5. No campo `Extensão de saída`, clique no botão contendo os 3 pontinhos ![](images/3pontinhos.png), vá em *Calcular a partir da camada* e indique a grade final como parâmetro (`grid_5km_final`). Clique em `Executar`.
+
+```{r}
+knitr::include_graphics("images/03_rasterizar_grid2.png")
+```
+
+O *pixel* do *raster* final e a quadrícula da grade que deu origem ao *raster* precisam ter o mesmo tamanho e a mesma posição.
+
+```{r}
+knitr::include_graphics("images/raster_final.png")
+```
+
+<!-- # Transformar outros arquivos vetoriais em *rasters* usando um raster modelo -->
+
+<!-- 1. No campo `Camada de entrada`, selecione a camada que deseja converter (`massa_dagua_se`).  -->
+<!-- 2. Preencha `Um valor fixo para gravar [opcional]` com o valor `1` (todos os *pixels* terão valor 1, assim como fizemos quando rasterizamos a grade). -->
+<!-- 3. Selecione `Unidades georreferenciadas` no campo `Unidades de tamanho de saída`. -->
+<!-- 4. Em `Resolução Horizontal/Largura` e `Resolução Vertical/Altura`, preencha com o valor 5000 (os pixels terão 5000 metros - 5 km - de lado, assim como os quadrados da grade e os *pixels* do *raster modelo*). -->
+<!-- 5. No campo `Extensão de saída`, clique no botão contendo os 3 pontinhos ![](images/3pontinhos.png), vá em *Calcular a partir da camada*. Indique a camada `raster_modelo`. Clique em `Executar`. -->
+
+<!-- ```{r} -->
+<!-- knitr::include_graphics("images/vec_raster_modelo.png") -->
+<!-- ``` -->
+
+# Observações
+
+## Porque Latitude é Y e Longitude é X? {#latlong}
+<center>
+
+[![](images/Screenshot 2023-04-24 at 16-11-16 Sarah Bell no Twitter.png){width=70%}](https://twitter.com/sarahbellmaps/status/1201259439384170496)
+
+</center>
+
+# Referências
+
+* [Transformar Planilha de Coordenadas XLSX em Shapefile de Pontos](https://www.instrutorgis.com.br/qgis310-transformar-planilha-de-coordenadas-xlsx-em-shapefile-de-pontos/)
+
+
+

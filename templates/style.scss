@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan&family=Open+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Montserrat&display=swap');
+
+/*-- scss:defaults --*/
+$h2-font-size:          1.6rem !default;
+$headings-font-weight:  500 !default;
+
+
+/*-- scss:rules --*/
+h1, h2, h3, h4, h5, h6 {
+  /*text-shadow: -1px -1px 0 rgba(0, 0, 0, .3);*/
+  font-family: 'League Spartan', sans-serif;
+}
+
+p, a, li {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+}
+
+.subtitle {
+  font-family: 'Open Sans', sans-serif;
+  padding-bottom: 20px;
+}
+
+.header-panel {
+  /*background-color: #009587;*/
+  background-color: #3B8D44;
+}
+
+.pages h1 {
+  color: #272727;
+}
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+  z-index: 2;
+  color: #fff;
+  background-color: #3b8d44;
+  border-color: #3b8d44;
+}
+
+a, a:focus, a:hover {
+  /*color: #23527c;*/
+  color: #3b8d44;
+}
+
+code {
+  font-family: 'Fira Code', monospace;
+  /*font-weight: bold;*/
+}
