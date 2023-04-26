@@ -2,19 +2,21 @@
 title: "Tutorial QGIS"
 subtitle: "Preparação dos dados para uso no Zonation"
 output:
-  word_document:
-    toc: yes
-    toc_depth: '5'
-    reference_docx: 'templates/template2.docx'
+  #       # controla se 'Tabela. n' fica negrito ou não 
+  #       # controla se 'Figura. n' fica negrito ou não. NÃO FUNCIONOU!! 
+  rmdformats::downcute:
+    css: templates/style.scss
+    toc_depth: 5
   html_document:
     css: templates/style.scss
     toc: yes
     toc_float:
       collapsed: no
       smooth_scroll: no
-  rmdformats::downcute:
-    css: templates/style.scss
-    toc_depth: 5
+  word_document:
+    toc: yes
+    toc_depth: '5'
+    reference_docx: 'templates/template2.docx'
   # officedown::rdocx_document:
   #   reference_docx: 'templates/template.docx'
   #   # toc: true
@@ -29,7 +31,6 @@ output:
   #   tables:
   #     topcaption: TRUE
   #     caption:
-  #       # controla se 'Tabela. n' fica negrito ou não 
   #       pre: 'Tabela '
   #       sep: '. '
   #       fp_text: !expr officer::fp_text_lite(bold = FALSE) 
@@ -37,7 +38,6 @@ output:
   #     align: left
   #     topcaption: FALSE
   #     caption:
-  #       # controla se 'Figura. n' fica negrito ou não. NÃO FUNCIONOU!! 
   #       pre: 'Figura '
   #       sep: '. '
   #       # https://rdrr.io/cran/officedown/src/R/rdocx_document.R
@@ -47,11 +47,11 @@ toc-title: "Sumário"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, 
-                      # fig.align = "center",
-                      dpi = 500
+                      fig.align = "center",
+                      dpi = 500,
                       # fig.width = 6.33,
                       # fig.height = 3.43,
-                      # out.width = '100%'
+                      out.width = '100%'
                       )
 ```
 
