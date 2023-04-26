@@ -304,9 +304,10 @@ knitr::include_graphics("images/carregar_estilo.png")
 
 8. Na *Caixa de Ferramentas de Processamento*, normalmente localizada no lado direito, acesse o menu `GRASS`, depois vá em `Raster (r.*)`, e localize a ferramenta `r.reclass` (ou digite o nome da ferramenta no campo de busca localizado no topo da *Caixa de Ferramentas*).
 
-> Se a sua *Caixa de Ferramentas de Processamento* não estiver visível, é possível ativá-la no menu *Processamento*, *Caixa de ferramentas*. 
+> Se a sua *Caixa de Ferramentas de Processamento* não estiver visível, é possível ativá-la no menu *Processamento*, *Caixa de ferramentas*.
 
-```{r}
+```{r image_grobs, fig.show = "hold", out.width = "50%", fig.align = "default"}
+
 knitr::include_graphics("images/toobox_reclass.png")
 knitr::include_graphics("images/agropec_classes.png")
 ```
@@ -332,7 +333,7 @@ knitr::include_graphics("images/reprojetar_raster.png")
 14. Escolha o nome do arquivo e o local para salvar no campo `Reprojetada`. 
 15. Clique em `Executar`.
 
-```{r}
+```{r image_grobs2, fig.show = "hold", out.width = "50%", fig.align = "default"}
 
 knitr::include_graphics("images/reprojetar_rastermodelo.png")
 knitr::include_graphics("images/reprojetar_rastermodelo2.png")
