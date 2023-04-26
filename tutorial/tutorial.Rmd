@@ -2,56 +2,60 @@
 title: "Tutorial QGIS"
 subtitle: "Preparação dos dados para uso no Zonation"
 output:
+  word_document:
+    toc: yes
+    toc_depth: '5'
+    reference_docx: 'templates/template2.docx'
+  html_document:
+    css: templates/style.scss
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
   rmdformats::downcute:
     css: templates/style.scss
     toc_depth: 5
-  officedown::rdocx_document:
-    reference_docx: 'templates/template.docx'
-    toc: true
-    page_margins:
-      bottom: 1
-      top: 1
-      right: 1
-      left: 1
-      header: 0.5
-      footer: 0.5
-      gutter: 0
-    tables:
-      topcaption: TRUE
-      caption:
-        # controla se 'Tabela. n' fica negrito ou não 
-        pre: 'Tabela '
-        sep: '. '
-        fp_text: !expr officer::fp_text_lite(bold = FALSE) 
-    plots:
-      align: left
-      topcaption: FALSE
-      caption:
-        # controla se 'Figura. n' fica negrito ou não. NÃO FUNCIONOU!! 
-        pre: 'Figura '
-        sep: '. '
-        # https://rdrr.io/cran/officedown/src/R/rdocx_document.R
-        fp_text: !expr officer::fp_text_lite(bold = FALSE)
-  html_document:
-    css: templates/style.scss
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
-toc-title: 'Índice'
+  # officedown::rdocx_document:
+  #   reference_docx: 'templates/template.docx'
+  #   # toc: true
+  #   page_margins:
+  #     bottom: 1
+  #     top: 1
+  #     right: 1
+  #     left: 1
+  #     header: 0.5
+  #     footer: 0.5
+  #     gutter: 0
+  #   tables:
+  #     topcaption: TRUE
+  #     caption:
+  #       # controla se 'Tabela. n' fica negrito ou não 
+  #       pre: 'Tabela '
+  #       sep: '. '
+  #       fp_text: !expr officer::fp_text_lite(bold = FALSE) 
+  #   plots:
+  #     align: left
+  #     topcaption: FALSE
+  #     caption:
+  #       # controla se 'Figura. n' fica negrito ou não. NÃO FUNCIONOU!! 
+  #       pre: 'Figura '
+  #       sep: '. '
+  #       # https://rdrr.io/cran/officedown/src/R/rdocx_document.R
+  #       fp_text: !expr officer::fp_text_lite(bold = FALSE)
+toc-title: "Sumário"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, 
                       # fig.align = "center",
-                      dpi = 500,
-                      fig.width = 6.33,
-                      fig.height = 3.43,
-                      out.width = '100%'
+                      dpi = 500
+                      # fig.width = 6.33,
+                      # fig.height = 3.43,
+                      # out.width = '100%'
                       )
 ```
 
-
+\newline
 > Este tutorial foi criado utilizando o QGIS versão 3.28.5-Firenze. Os nomes dos menus e caminhos serão apresentados em Português. Se desejar trocar o idioma do seu programa, [clique aqui](https://www.youtube.com/watch?v=VK4nC3p-VT4) para saber como.
 
 # Criar arquivo de pontos...
@@ -66,7 +70,7 @@ O arquivo pode ter quantas colunas você desejar, mas precisa ter obrigatoriamen
 knitr::include_graphics("images/add_camada_csv_1.png")
 ```
 
-2. No menu lateral, à esquerda, selecione *Texto delimitado*. Utilizando os 3 pontinhos ![](images/3pontinhos.png) localizado no final do campo `Nome do arquivo`, localize a tabela no formato `.csv` salva em seu computador. Certifique-se que `Campo X` e `Campo Y` referem-se às colunas de longitude e de latitude respectivamente. 
+2. No menu lateral, à esquerda, selecione *Texto delimitado*. Utilizando os os ![](images/3pontinhos.png) localizado no final do campo `Nome do arquivo`, localize a tabela no formato `.csv` salva em seu computador. Certifique-se que `Campo X` e `Campo Y` referem-se às colunas de longitude e de latitude respectivamente. 
 
 ```{r}
 knitr::include_graphics("images/add_camada_csv_2.png")
@@ -264,17 +268,81 @@ O *pixel* do *raster* final e a quadrícula da grade que deu origem ao *raster* 
 knitr::include_graphics("images/raster_final.png")
 ```
 
-<!-- # Transformar outros arquivos vetoriais em *rasters* usando um raster modelo -->
+# Ajustar um raster em função do *raster modelo*
 
-<!-- 1. No campo `Camada de entrada`, selecione a camada que deseja converter (`massa_dagua_se`).  -->
-<!-- 2. Preencha `Um valor fixo para gravar [opcional]` com o valor `1` (todos os *pixels* terão valor 1, assim como fizemos quando rasterizamos a grade). -->
-<!-- 3. Selecione `Unidades georreferenciadas` no campo `Unidades de tamanho de saída`. -->
-<!-- 4. Em `Resolução Horizontal/Largura` e `Resolução Vertical/Altura`, preencha com o valor 5000 (os pixels terão 5000 metros - 5 km - de lado, assim como os quadrados da grade e os *pixels* do *raster modelo*). -->
-<!-- 5. No campo `Extensão de saída`, clique no botão contendo os 3 pontinhos ![](images/3pontinhos.png), vá em *Calcular a partir da camada*. Indique a camada `raster_modelo`. Clique em `Executar`. -->
+Este passo é importante para a criação da variável **Condição da Paisagem**. Vamos usar uma classe do Projeto MapBiomas - coleção 7 para esse passo. 
 
-<!-- ```{r} -->
-<!-- knitr::include_graphics("images/vec_raster_modelo.png") -->
-<!-- ``` -->
+1. Clique no botão `Adicionar Camada Raster`, localizada na barra de ferramentas `Gerenciar Camadas` que ativamos anteriormente (Também pode ser feito pelo menu *Camada*, *Adicionar Camada*, *Adicionar Camada Raster...*).
+
+```{r}
+knitr::include_graphics("images/add_camada_raster.png")
+```
+2. Utilize o botão contendo os 3 pontinhos ![](images/3pontinhos.png), localizado no final do campo `Base de dado(s) raster` para localizar o dado do MapBiomas no seu computador. Clique em `Adicionar`. Depois, clique em `Fechar`.
+
+```{r}
+knitr::include_graphics("images/add_camada_raster2.png")
+```
+
+3. Vamos adicionar uma [paleta de cores para as classes de uso e cobertura](https://mapbiomas-br-site.s3.amazonaws.com/downloads/_EN__C%C3%B3digos_da_legenda_Cole%C3%A7%C3%A3o_7.pdf). 
+Clique duas vezes sobre o nome da camada para abrir a janela de **Propriedades**. 
+
+```{r}
+knitr::include_graphics("images/raster_propriedades.png")
+```
+
+4. No menu lateral, clique em *Simbologia*. No campo `Tipo de redenrização`, escolha `Paletizado/Valores únicos.` Clique em `Classificar`.
+
+5. Clique no botão `Estilo`, localizado na parte inferior, a esquerda, da janela e vá em `Carregar Estilo`.
+
+```{r}
+knitr::include_graphics("images/carregar_estilo.png")
+```
+
+6. Localize, no seu computador, na mesma pasta em que o dado do MapBiomas está localizado, o arquivo `mapbiomasBR7_simbologia.qml`. Clique em `Ok` para fechar a janela. 
+
+7. Agora, vamos reclassificar o *raster* para ficarmos apenas com as classes correspondentes a **Agropecuária**. 
+
+8. Na *Caixa de Ferramentas de Processamento*, normalmente localizada no lado direito, acesse o menu `GRASS`, depois vá em `Raster (r.*)`, e localize a ferramenta `r.reclass` (ou digite o nome da ferramenta no campo de busca localizado no topo da *Caixa de Ferramentas*).
+
+> Se a sua *Caixa de Ferramentas de Processamento* não estiver visível, é possível ativá-la no menu *Processamento*, *Caixa de ferramentas*. 
+
+```{r}
+knitr::include_graphics("images/toobox_reclass.png")
+knitr::include_graphics("images/agropec_classes.png")
+```
+
+9. No campo `Input raster layer`, selecione a camada com os dados do MapBiomas `mapbiomas7_SE_2021.tif`. No campo `Reclass rules text`, colocamos a regra que queremos usar para a reclassificação do *raster*: todos os valores correspondentes às classes de agropecuária (`14 15 18 19 39 20 40 62 41 36 46 47 48 9 21`) serão  transformados em `1`. Todos os outros, representados pelo símbolo `*`, terão valor `0`. 
+
+10. Defina o nome do arquivo e o local para salvar no campo `Reclassified`.
+
+```{r}
+knitr::include_graphics("images/reclass_mapbiomas.png")
+```
+
+Por último, vamos alterar o **sistema de coordenadas de referência**, o __tamanho do *pixel*__ e __extensão do *raster*__ para que as dimensões sejam as mesmas do **raster modelo**. 
+
+11. No menu *Raster*, vá em *Projeções*, *Reprojetar coordenadas*.
+
+```{r}
+knitr::include_graphics("images/reprojetar_raster.png")
+```
+
+12. Insira o *raster* reclassificado como `Camada de entrada`. Selecione o **Sistema de Coordenadas** equivalente ao do **raster modelo** no campo `SRC de destino [opcional]`. Como queremos um raster final cujo *pixel* tenha 5 km de lado, insira o valor `5000` no campo `Resolução do arquivo de saída nas unidades georreferenciadas do alvo [opcional]`. Como definimos um sistema de coordenadas cuja unidade é **metros** no campo `SRC de destino`, o *pixel* terá 5000 metros de lado.
+13. No campo `Extensões georreferenciadas de Arquivo de saída a ser criado [opcional]`, use a setinha no lado direito do campo para `Calcular a partir da Camada` - `raster_modelo`.
+14. Escolha o nome do arquivo e o local para salvar no campo `Reprojetada`. 
+15. Clique em `Executar`.
+
+```{r}
+
+knitr::include_graphics("images/reprojetar_rastermodelo.png")
+knitr::include_graphics("images/reprojetar_rastermodelo2.png")
+```
+
+5. No campo `Extensão de saída`, clique no botão contendo os os ![](images/3pontinhos.png), vá em *Calcular a partir da camada*. Indique a camada `raster_modelo`. Clique em `Executar`.
+
+```{r}
+knitr::include_graphics("images/vec_raster_modelo.png")
+```
 
 # Observações
 
